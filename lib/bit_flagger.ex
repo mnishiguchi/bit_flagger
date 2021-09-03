@@ -10,8 +10,8 @@ defmodule BitFlagger do
 
   ## Examples
 
-  iex> parse(0b1010, 4)
-  [false, true, false, true]
+      iex> parse(0b1010, 4)
+      [false, true, false, true]
 
   """
   @spec parse(non_neg_integer, non_neg_integer) :: list(boolean)
@@ -24,11 +24,11 @@ defmodule BitFlagger do
 
   ## Examples
 
-  iex> on?(0b0010, 1)
-  true
+      iex> on?(0b0010, 1)
+      true
 
-  iex> on?(0b0010, 3)
-  false
+      iex> on?(0b0010, 3)
+      false
 
   """
   @spec on?(non_neg_integer, non_neg_integer) :: boolean
@@ -41,11 +41,11 @@ defmodule BitFlagger do
 
   ## Examples
 
-  iex> off?(0b0001, 1)
-  true
+      iex> off?(0b0001, 1)
+      true
 
-  iex> off?(0b0001, 0)
-  false
+      iex> off?(0b0001, 0)
+      false
 
   """
   @spec off?(non_neg_integer, non_neg_integer) :: boolean
@@ -56,8 +56,8 @@ defmodule BitFlagger do
 
   ## Examples
 
-  iex> on(0b0000, 2)
-  0b0100
+      iex> on(0b0000, 2)
+      0b0100
 
   """
   @spec on(non_neg_integer, non_neg_integer) :: non_neg_integer
@@ -70,8 +70,8 @@ defmodule BitFlagger do
 
   ## Examples
 
-  iex> off(0b1111, 2)
-  0b1011
+      iex> off(0b1111, 2)
+      0b1011
 
   """
   @spec off(non_neg_integer, non_neg_integer) :: non_neg_integer
