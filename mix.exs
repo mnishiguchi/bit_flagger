@@ -1,13 +1,21 @@
 defmodule BitFlagger.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+  @source_url "https://github.com/mnishiguchi/bit_flagger"
+
   def project do
     [
       app: :bit_flagger,
-      version: "0.1.0",
-      elixir: "~> 1.12",
+      version: @version,
+      description: "Manipulate bit flags in Elixir",
+      elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      package: package(),
+      aliases: [],
+      dialyzer: dialyzer(),
+      docs: docs()
     ]
   end
 
@@ -26,5 +34,35 @@ defmodule BitFlagger.MixProject do
       {:ex_doc, "~> 0.24", only: [:dev], runtime: false},
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false}
     ]
+  end
+
+  defp dialyzer() do
+    [
+      flags: [:race_conditions, :unmatched_returns, :error_handling, :underspecs]
+    ]
+  end
+
+  defp docs do
+    [
+      extras: ["README.md"],
+      source_ref: "v#{@version}",
+      source_url: @source_url
+    ]
+  end
+
+  defp package do
+    %{
+      files: [
+        "lib",
+        "mix.exs",
+        "README.md",
+        "LICENSE*",
+        "CHANGELOG*"
+      ],
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => @source_url
+      }
+    }
   end
 end

@@ -1,6 +1,10 @@
 # BitFlagger
 
-Manipulate bit flags.
+[![Hex version](https://img.shields.io/hexpm/v/bit_flagger.svg 'Hex version')](https://hex.pm/packages/bit_flagger)
+[![API docs](https://img.shields.io/hexpm/v/bit_flagger.svg?label=docs 'API docs')](https://hexdocs.pm/bit_flagger)
+[![CI](https://github.com/mnishiguchi/bit_flagger/actions/workflows/ci.yml/badge.svg)](https://github.com/mnishiguchi/bit_flagger/actions/workflows/ci.yml)
+
+Manipulate bit flags in Elixir.
 
 ## Usage
 
