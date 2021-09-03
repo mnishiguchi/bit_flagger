@@ -14,18 +14,21 @@ iex> size = 7
 # All the days of the week are 127, no day of the week is the value 0
 iex> state = 0b0000000
 0
+
 iex> BitFlagger.parse(state, size)
 [false, false, false, false, false, false, false]
 
-# Turn on the flags at index 1 and 3
+# Turn on the flags at index 1 (Monday) and 3 (Wednesday)
 iex> state = state |> BitFlagger.on(1) |> BitFlagger.on(3)
 10
+
 iex> BitFlagger.parse(state, size)
 [false, true, false, true, false, false, false]
 
-# Turn off the flag at index 1
+# Turn off the flag at index 1 (Monday)
 iex> state = BitFlagger.off(state, 1)
 8
+
 iex> BitFlagger.parse(state, size)
 [false, false, false, true, false, false, false]
 
