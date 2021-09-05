@@ -13,9 +13,12 @@ defmodule BitFlagger do
       iex> parse(0b1010, 4)
       [false, true, false, true]
 
+      iex> parse(<<0b1010>>, 4)
+      [false, true, false, true]
+
   """
-  @spec parse(non_neg_integer, non_neg_integer) :: list(boolean)
-  def parse(state, size) when is_integer(state) and is_integer(size) do
+  @spec parse(non_neg_integer | binary, non_neg_integer) :: list(boolean)
+  def parse(state, size) when (is_integer(state) or is_binary(state)) and is_integer(size) do
     for index <- 0..(size - 1), do: on?(state, index)
   end
 
@@ -30,10 +33,20 @@ defmodule BitFlagger do
       iex> on?(0b0010, 3)
       false
 
+      iex> on?(<<0b0010>>, 1)
+      true
+
+      iex> on?(<<0b0010>>, 3)
+      false
+
   """
-  @spec on?(non_neg_integer, non_neg_integer) :: boolean
+  @spec on?(non_neg_integer | binary, non_neg_integer) :: boolean
   def on?(state, index) when is_integer(state) and is_integer(index) do
     (state >>> index &&& 0x01) == 1
+  end
+
+  def on?(state, index) when is_binary(state) do
+    state |> :binary.decode_unsigned() |> on?(index)
   end
 
   @doc """
@@ -47,8 +60,14 @@ defmodule BitFlagger do
       iex> off?(0b0001, 0)
       false
 
+      iex> off?(<<0b0001>>, 1)
+      true
+
+      iex> off?(<<0b0001>>, 0)
+      false
+
   """
-  @spec off?(non_neg_integer, non_neg_integer) :: boolean
+  @spec off?(non_neg_integer | binary, non_neg_integer) :: boolean
   def off?(state, index), do: !on?(state, index)
 
   @doc """
@@ -59,10 +78,20 @@ defmodule BitFlagger do
       iex> on(0b0000, 2)
       0b0100
 
+      iex> on(<<0b0000>>, 2)
+      <<0b0100>>
+
   """
-  @spec on(non_neg_integer, non_neg_integer) :: non_neg_integer
+  @spec on(non_neg_integer | binary, non_neg_integer) :: non_neg_integer
   def on(state, index) when is_integer(state) and is_integer(index) do
     state ||| 0x01 <<< index
+  end
+
+  def on(state, index) when is_binary(state) do
+    state
+    |> :binary.decode_unsigned()
+    |> on(index)
+    |> :binary.encode_unsigned()
   end
 
   @doc """
@@ -73,9 +102,19 @@ defmodule BitFlagger do
       iex> off(0b1111, 2)
       0b1011
 
+      iex> off(<<0b1111>>, 2)
+      <<0b1011>>
+
   """
-  @spec off(non_neg_integer, non_neg_integer) :: non_neg_integer
+  @spec off(non_neg_integer | binary, non_neg_integer) :: non_neg_integer
   def off(state, index) when is_integer(state) and is_integer(index) do
     state &&& ~~~(0x01 <<< index)
+  end
+
+  def off(state, index) when is_binary(state) do
+    state
+    |> :binary.decode_unsigned()
+    |> off(index)
+    |> :binary.encode_unsigned()
   end
 end
