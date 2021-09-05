@@ -5,8 +5,11 @@ defmodule BitFlagger do
 
   use Bitwise, only_operators: true
 
+  @type state :: non_neg_integer | binary
+  @type index :: non_neg_integer
+
   @doc """
-  Converts an integer to a list of boolean values.
+  Converts state to a list of boolean values.
 
   ## Examples
 
@@ -17,7 +20,7 @@ defmodule BitFlagger do
       [false, true, false, true]
 
   """
-  @spec parse(non_neg_integer | binary, non_neg_integer) :: list(boolean)
+  @spec parse(state, pos_integer) :: list(boolean)
   def parse(state, size) when (is_integer(state) or is_binary(state)) and is_integer(size) do
     for index <- 0..(size - 1), do: on?(state, index)
   end
@@ -40,13 +43,15 @@ defmodule BitFlagger do
       false
 
   """
-  @spec on?(non_neg_integer | binary, non_neg_integer) :: boolean
+  @spec on?(state, index) :: boolean
   def on?(state, index) when is_integer(state) and is_integer(index) do
     (state >>> index &&& 0x01) == 1
   end
 
   def on?(state, index) when is_binary(state) do
-    state |> :binary.decode_unsigned() |> on?(index)
+    state
+    |> :binary.decode_unsigned()
+    |> on?(index)
   end
 
   @doc """
@@ -67,7 +72,7 @@ defmodule BitFlagger do
       false
 
   """
-  @spec off?(non_neg_integer | binary, non_neg_integer) :: boolean
+  @spec off?(state, index) :: boolean
   def off?(state, index), do: !on?(state, index)
 
   @doc """
@@ -82,7 +87,7 @@ defmodule BitFlagger do
       <<0b0100>>
 
   """
-  @spec on(non_neg_integer | binary, non_neg_integer) :: non_neg_integer
+  @spec on(state, index) :: state
   def on(state, index) when is_integer(state) and is_integer(index) do
     state ||| 0x01 <<< index
   end
@@ -106,7 +111,7 @@ defmodule BitFlagger do
       <<0b1011>>
 
   """
-  @spec off(non_neg_integer | binary, non_neg_integer) :: non_neg_integer
+  @spec off(state, index) :: state
   def off(state, index) when is_integer(state) and is_integer(index) do
     state &&& ~~~(0x01 <<< index)
   end
